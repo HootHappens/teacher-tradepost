@@ -50,3 +50,8 @@
     line-height: 1.55;
   }
 }
+
+/* Center feature icons on wider screens; preserve compact mobile grid */
+@media (min-width: 701px) {
+  .feature-card .feature-icon { margin-left: auto; margin-right: auto; }
+}
