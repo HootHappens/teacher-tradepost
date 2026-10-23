@@ -1,6 +1,6 @@
-/** Add your real Google Form links here. Leave blank until ready. */
+/** Public, respondent-facing Google Forms. Keep editor URLs private. */
 export const siteConfig = {
-  shareIdeasUrl: '',
-  joinWaitlistUrl: '',
+  shareIdeasUrl: 'https://docs.google.com/forms/d/1iwFzvqhBfHfYhj4u6uv-w6dY2dZs9845_wDw9NCJRdg/viewform',
+  joinWaitlistUrl: 'https://docs.google.com/forms/d/1AfVPCYoZSxgzcyMMmcQKdU0XTQFGFl3csYsmCwITxi0/viewform',
   contactUrl: '',
 } as const;
