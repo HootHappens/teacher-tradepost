@@ -4,7 +4,7 @@ import { siteConfig } from './config';
 const letters = ['t','e','a','c','h','e','r','s'];
 const colors = ['#C97C5D','#7FA7C9','#E5B94B','#A8C3A0','#C97C5D','#7FA7C9','#A8C3A0','#E5B94B'];
 
-function Wordmark() { return <a className="brand" href="#home" aria-label="Teacher Tradepost home"><img src="/IMG_6325.png" alt="Teacher Tradepost" onError={e => { e.currentTarget.style.display = "none"; e.currentTarget.insertAdjacentText("afterend", "Teacher Tradepost"); }} /></a>; }
+function Wordmark() { return <a className="brand" href="#home" aria-label="Teacher Tradepost home"><img src="/Teacher.png" alt="Teacher Tradepost" onError={e => { e.currentTarget.style.display = "none"; e.currentTarget.insertAdjacentText("afterend", "Teacher Tradepost"); }} /></a>; }
 function Action({ href, children, variant = 'solid' }: { href: string; children: React.ReactNode; variant?: 'solid' | 'outline' }) { return href ? <a className={`button ${variant}`} href={href} target="_blank" rel="noopener noreferrer">{children}</a> : <span className={`button ${variant} disabled`} aria-disabled="true" title="Link coming soon">{children}<span className="button-note">(coming soon)</span></span>; }
 function Icon({ type }: { type: 'discover'|'trade'|'locker' }) { return <span className={`feature-icon ${type}`} aria-hidden="true">{type === 'discover' ? '⌕' : type === 'trade' ? '⇄' : '▤'}</span>; }
 
