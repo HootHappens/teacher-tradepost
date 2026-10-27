@@ -69,7 +69,7 @@ export default function App() {
   if (document.querySelector('script[data-mailerlite-universal]')) return;
   const win = window as Window & { ml?: ((...args: unknown[]) => void) & {q?: unknown[][]} };
   if (!win.ml) {
-   const queue = ((...args: unknown[]) => { (queue.q ||= []).push(args); }) as typeof win.ml;
+   const queue = ((...args: unknown[]) => { (queue.q ||= []).push(args); }) as ((...args: unknown[]) => void) & {q?: unknown[][]};
    win.ml = queue;
   }
   const script = document.createElement('script');
