@@ -39,7 +39,7 @@ function PrivacyPage() {
 
 export default function App() {
  const [menuOpen, setMenuOpen] = useState(false);
- if (window.location.pathname.replace(/\\/$/, "") === "/privacy") return <PrivacyPage />;
+ if (["/privacy", "/privacy/"].includes(window.location.pathname)) return <PrivacyPage />;
  const closeMenu = () => setMenuOpen(false);
  return <>
   <header className="site-header"><div className="container header-inner"><Wordmark /><button className="menu-toggle" type="button" aria-label={menuOpen ? 'Close menu' : 'Open menu'} aria-expanded={menuOpen} aria-controls="site-navigation" onClick={() => setMenuOpen(v => !v)}>{menuOpen ? '✕' : '☰'}</button><nav id="site-navigation" className={menuOpen ? 'nav open' : 'nav'} aria-label="Main navigation"><a onClick={closeMenu} href="#home">Home</a><a onClick={closeMenu} href="#features">Features</a><a onClick={closeMenu} href="#about">About</a><div onClick={closeMenu}><Action href={siteConfig.joinWaitlistUrl}>Join Waitlist</Action></div></nav></div></header>
