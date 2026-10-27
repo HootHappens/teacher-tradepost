@@ -15,11 +15,11 @@ function PrivacyPage() {
  <h1>Privacy Policy</h1><p className="privacy-updated">Effective October 27, 2026</p>
  <p>Teacher Tradepost is a developing educational-resource marketplace operated by Hoot Happens LLC. This policy explains how information is handled through our public coming-soon website, interest forms, and launch waitlist. The marketplace is not yet open for purchases or seller accounts through this website.</p>
  <h2>Information we collect</h2>
- <p>When you join our waitlist, we collect the email address you submit and any optional information you choose to provide. If you complete our “Share Your Ideas” form, we receive the responses and any contact information you provide. Services supporting the website and forms may also process technical information, such as IP address, device/browser details, timestamps, and security logs.</p>
+ <p>When you join our waitlist, we collect the email address you submit and any optional information you choose to provide. If you complete our “Share Your Ideas” form or contact us, we receive the responses and any name, email address, or message you provide. Services supporting the website and forms may also process technical information, such as IP address, device/browser details, timestamps, and security logs.</p>
  <h2>How we use information</h2>
  <p>We use your information to manage the waitlist, send requested launch announcements and occasional Teacher Tradepost news, review educator feedback, answer inquiries, maintain the website, and help prevent misuse. You may unsubscribe from marketing emails at any time using the link in those messages.</p>
  <h2>Service providers</h2>
- <p>We use trusted third-party service providers for website hosting, form collection, email marketing, business communications, and website security. These providers may process information such as your email address, form responses, and limited technical data on our behalf to deliver those services. Some forms may be hosted on external services. We share only the information needed for these purposes and do not authorize these providers to use your contact information for unrelated marketing on our behalf.</p>
+ <p>Our public website uses Cloudflare for hosting and security. We also use third-party service providers for form collection, email marketing, and business communications. These providers may process information such as your email address, form responses, and limited technical data on our behalf to deliver those services. Some forms may be hosted on external services. We share only the information needed for these purposes and do not authorize these providers to use your contact information for unrelated marketing on our behalf.</p>
  <h2>Sharing and protection</h2>
  <p>We do not intend to sell waitlist email addresses or use them to send unrelated third-party promotions. Information may be shared with providers helping operate the website and communications, or disclosed when required by law or necessary to address security or legal concerns. We use reasonable measures to safeguard information, but no online service can guarantee absolute security.</p>
  <h2>Retention and your choices</h2>
@@ -37,15 +37,40 @@ function PrivacyPage() {
  </article></main><footer className="footer"><div className="container copyright">© {new Date().getFullYear()} Teacher Tradepost · <a href="/">Home</a> · <a href="/privacy">Privacy Policy</a></div></footer></>;
 }
 
+function ContactPage() {
+ const [name,setName]=useState('');
+ const [email,setEmail]=useState('');
+ const [topic,setTopic]=useState('General inquiry');
+ const [message,setMessage]=useState('');
+ function composeEmail(e: React.FormEvent<HTMLFormElement>) {
+  e.preventDefault();
+  const subject='Teacher Tradepost: '+topic;
+  const body=['Name: '+name.trim(),'Reply-to: '+email.trim(),'Topic: '+topic,'','Message:',message.trim()].join('\n');
+  window.location.href='mailto:admin@teachertradepost.com?subject='+encodeURIComponent(subject)+'&body='+encodeURIComponent(body);
+ }
+ return <><header className="site-header"><div className="container header-inner"><Wordmark /><a className="privacy-back" href="/">← Back to Teacher Tradepost</a></div></header>
+ <main className="privacy-main"><section className="container privacy-document"><p className="eyebrow">WE'D LOVE TO HEAR FROM YOU</p><h1>Contact Teacher Tradepost</h1><p>Have a question about the upcoming marketplace? Send us a message below. This form opens a prepared message in your email app so you can review and send it.</p>
+ <form className="contact-form" onSubmit={composeEmail}>
+ <label htmlFor="contact-name">Your name</label><input id="contact-name" required maxLength={100} autoComplete="name" value={name} onChange={e=>setName(e.target.value)}/>
+ <label htmlFor="contact-email">Your email address</label><input id="contact-email" type="email" required maxLength={254} autoComplete="email" value={email} onChange={e=>setEmail(e.target.value)}/>
+ <label htmlFor="contact-topic">What is this about?</label><select id="contact-topic" value={topic} onChange={e=>setTopic(e.target.value)}><option>General inquiry</option><option>Seller question</option><option>Waitlist question</option><option>Website feedback</option><option>Privacy request</option></select>
+ <label htmlFor="contact-message">Your message</label><textarea id="contact-message" required minLength={5} maxLength={3000} rows={6} value={message} onChange={e=>setMessage(e.target.value)}/>
+ <p className="contact-note">Clicking below opens your email application. Your message will not be sent until you press Send there. Please do not include passwords, payment details, or other sensitive information. See our <a href="/privacy">Privacy Policy</a>.</p>
+ <button className="button solid" type="submit">Open Email to Send</button>
+ </form><p>Prefer to email us directly? <a href="mailto:admin@teachertradepost.com">admin@teachertradepost.com</a></p>
+ <a className="button outline privacy-home-button" href="/">Return to Teacher Tradepost</a></section></main><footer className="footer"><div className="container copyright">© {new Date().getFullYear()} Teacher Tradepost · <a href="/">Home</a> · <a href="/privacy">Privacy Policy</a></div></footer></>;
+}
+
 export default function App() {
  const [menuOpen, setMenuOpen] = useState(false);
  if (["/privacy", "/privacy/"].includes(window.location.pathname)) return <PrivacyPage />;
+ if (["/contact", "/contact/"].includes(window.location.pathname)) return <ContactPage />;
  const closeMenu = () => setMenuOpen(false);
  return <>
   <header className="site-header"><div className="container header-inner"><Wordmark /><button className="menu-toggle" type="button" aria-label={menuOpen ? 'Close menu' : 'Open menu'} aria-expanded={menuOpen} aria-controls="site-navigation" onClick={() => setMenuOpen(v => !v)}>{menuOpen ? '✕' : '☰'}</button><nav id="site-navigation" className={menuOpen ? 'nav open' : 'nav'} aria-label="Main navigation"><a onClick={closeMenu} href="#home">Home</a><a onClick={closeMenu} href="#features">Features</a><a onClick={closeMenu} href="#about">About</a><div onClick={closeMenu}><Action href={siteConfig.joinWaitlistUrl}>Join Waitlist</Action></div></nav></div></header>
   <main id="home"><section className="hero"><div className="container hero-grid"><div className="hero-copy"><span className="eyebrow">THE FUTURE OF TEACHER RESOURCES</span><h1>A better place for teaching resources starts with <span className="rainbow-word" aria-label="teachers">{letters.map((letter, i) => <span key={i} aria-hidden="true" style={{ color: colors[i] }}>{letter}</span>)}</span><span className="period">.</span></h1><p>Teacher Tradepost is a new marketplace where educators can discover, share, and organize teaching resources. I'm building this with teachers, for teachers, and your feedback will help shape the journey.</p><div className="hero-actions"><Action href={siteConfig.shareIdeasUrl}>Share Your Ideas</Action><Action href={siteConfig.joinWaitlistUrl} variant="outline">Join the Waitlist</Action></div><div className="hero-footnote">Thoughtfully created for the educators who do it all.</div></div></div></section>
   <section id="features" className="features section"><div className="container"><div className="section-intro"><h2>How Teacher Tradepost Works</h2><p>Everything you need, all in one thoughtful place.</p></div><div className="feature-grid"><article className="feature-card"><Icon type="discover" /><h3>Discover</h3><p>Find quality teaching resources designed to make classroom life easier.</p></article><article className="feature-card"><Icon type="trade" /><h3>Trade</h3><p>Share your creativity, support fellow educators, and earn from the resources you create.</p></article><article className="feature-card"><Icon type="locker" /><h3>Teacher Locker</h3><p>Keep your teaching resources organized and easy to access in one convenient place.</p></article></div></div></section>
   <section id="about" className="about section"><div className="container"><div className="difference"><h2>What Makes Teacher Tradepost Different?</h2><p className="difference-intro">Teacher Tradepost is being designed around one simple idea: giving educators more freedom, better experiences, and tools that make life easier.</p><div className="difference-grid"><div><h3>More Freedom for Sellers</h3><p>Greater flexibility, independence, and more opportunities to succeed as a resource creator.</p></div><div><h3>Better Experiences for Buyers</h3><p>A simpler, more enjoyable way to discover, purchase, and organize teaching resources.</p></div><div><h3>Less Unnecessary Work for Everyone</h3><p>Thoughtful tools and streamlined processes that help educators save valuable time.</p></div></div><p className="difference-quote">Because teaching is already hard enough. Finding, sharing, and managing resources shouldn't be.</p></div></div></section></main>
-  <footer className="footer"><div className="container footer-inner"><div><Wordmark /><p>Made for educators, inspired by educators.</p></div><nav aria-label="Footer navigation"><a href="#home">Home</a><a href="#features">Features</a><a href="#about">About</a>{siteConfig.contactUrl ? <a href={siteConfig.contactUrl}>Contact</a> : <span title="Contact details coming soon">Contact (coming soon)</span>}<a href="/privacy">Privacy Policy</a></nav></div><div className="container copyright">© {new Date().getFullYear()} Teacher Tradepost. All rights reserved.</div></footer>
+  <footer className="footer"><div className="container footer-inner"><div><Wordmark /><p>Made for educators, inspired by educators.</p></div><nav aria-label="Footer navigation"><a href="#home">Home</a><a href="#features">Features</a><a href="#about">About</a><a href="/contact">Contact</a><a href="/privacy">Privacy Policy</a></nav></div><div className="container copyright">© {new Date().getFullYear()} Teacher Tradepost. All rights reserved.</div></footer>
  </>;
 }
