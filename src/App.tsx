@@ -80,6 +80,22 @@ export default function App() {
   document.body.appendChild(script);
   win.ml?.('account', '2747485');
  }, []);
+ useEffect(() => {
+  // MailerLite's remote embed can briefly serve a stale button caption.
+  // Only correct the label; leave its submission, consent, and CAPTCHA handling untouched.
+  const root = document.querySelector('#waitlist .ml-embedded');
+  if (!root) return;
+  const syncLabel = () => {
+   const buttons = root.querySelectorAll<HTMLButtonElement>('button.primary, .ml-form-embedSubmit button');
+   buttons.forEach(button => {
+    if (button.textContent?.trim() === 'Join the List') button.textContent = 'Join';
+   });
+  };
+  syncLabel();
+  const observer = new MutationObserver(syncLabel);
+  observer.observe(root, { childList: true, subtree: true, characterData: true });
+  return () => observer.disconnect();
+ }, []);
  if (["/privacy", "/privacy/"].includes(window.location.pathname)) return <PrivacyPage />;
  if (["/contact", "/contact/"].includes(window.location.pathname)) return <ContactPage />;
  const closeMenu = () => setMenuOpen(false);
