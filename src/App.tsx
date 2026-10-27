@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { siteConfig } from './config';
 
 const letters = ['t','e','a','c','h','e','r','s'];
@@ -63,6 +63,22 @@ function ContactPage() {
 
 export default function App() {
  const [menuOpen, setMenuOpen] = useState(false);
+ useEffect(() => {
+  // The form is inserted by React. Load MailerLite only once the container exists.
+  if (window.location.pathname !== '/') return;
+  if (document.querySelector('script[data-mailerlite-universal]')) return;
+  const win = window as Window & { ml?: ((...args: unknown[]) => void) & {q?: unknown[][]} };
+  if (!win.ml) {
+   const queue = ((...args: unknown[]) => { (queue.q ||= []).push(args); }) as typeof win.ml;
+   win.ml = queue;
+  }
+  const script = document.createElement('script');
+  script.src = 'https://assets.mailerlite.com/js/universal.js';
+  script.async = true;
+  script.dataset.mailerliteUniversal = 'true';
+  document.body.appendChild(script);
+  win.ml?.('account', '2747485');
+ }, []);
  if (["/privacy", "/privacy/"].includes(window.location.pathname)) return <PrivacyPage />;
  if (["/contact", "/contact/"].includes(window.location.pathname)) return <ContactPage />;
  const closeMenu = () => setMenuOpen(false);
